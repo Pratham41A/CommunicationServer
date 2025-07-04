@@ -23,7 +23,7 @@ export async function register(req, res) {
 }
 //req.body must contain userId
 export async function getUserProfile(req, res) {
-  const { userId } = req.body;
+  const { userId } = req.query;
   const user = await User.findById(userId);
   res.status(200).json(user);
 }
