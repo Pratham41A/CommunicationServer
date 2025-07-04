@@ -4,12 +4,16 @@ import { sendOtp } from "../model/Mail.js"
 import { client } from "../config/redis.js";
 
 //req.body must contain userName, email, password, profilePicture, phoneNumber, gender, bio 
+export async function checkIsUserExist(){
+ const { email } = req.body
+  const userExist = await User.findOne({email});
+    if (userExist) return res.status(401).json({ message: "User Already Exist" });
+    else return res.status(200).json({message:"New User"})
+}
 export async function register(req, res) {
   try {
-    const { email } = req.body
+    
     const { password, ...profile } = req.body;
-    const userExist = await User.findOne({email});
-    if (userExist) return res.status(401).json({ message: "User Already Exist" });
 
     const user = await User.create({
       ...profile,
